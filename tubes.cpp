@@ -6,10 +6,9 @@ using namespace std;
 int main(){
     srand(time(0));
 
-    int health_robot=50, health_kecoak=20;              // Health awal robot dan kecoak
-    int d=5;
-    int damage_robot=rand()%d, damage_kecoa=rand()%d;   // Damage awal tembakan robot dan kecoak (random)
-    int kecoak=1, kecoak_killed=0;                      // Jumlah kecoak dan yang terbunuh
+    int health_robot=50, health_kecoak=20;      // Health awal robot dan kecoak
+    int damage_robot=5, damage_kecoa=5;         // Damage awal tembakan robot dan kecoak (random)
+    int kecoak=1, kecoak_killed=0;              // Jumlah kecoak dan yang terbunuh
     int a, b;
 
     //Batas koordinat
@@ -32,12 +31,12 @@ int main(){
     // Spawn kecoak random
     int Xk, Yk;
     while (kecoak>0){
-        Xk = rand() % n; 
+        Xk = rand() % n;
         Yk = rand() % m;
         if (Xk!=0 && Yk!=m-1){
             if (koor[Yk][Xk]==0){
-                koor[Yk][Xk]=8;
-                kecoak = kecoak - 1;
+                koor[m-1-Yk][Xk]=8; // Kecoak di peta adalah angka 8
+                kecoak-=1;
             }
         }
     }
@@ -54,14 +53,10 @@ int main(){
     printf("Health robot: %d\n", health_robot);
     printf("Health kecoak: %d\n", health_kecoak);
 
-
     while (health_robot>0){
-        // BUAT DETECTOR BELUM GAISSSSSSSSSS
-
-
         // Komando robot bergerak atau menembak
-        printf("\n===COMMAND===");
-        printf("\n1. Bergerak\n2. Menembak\nApakah robot akan bergerak atau menembak (masukkan angka)? ");
+        printf("\n===COMMAND===\n");
+        printf("1. Bergerak\n2. Menembak\n3. Hentikan permainan\nApakah yang akan dilakukan robot (masukkan angka)? ");
         scanf("%d", &a);
         koor[m-1-Yr][Xr]=0;
         if (a==1){        // Robot bergerak
@@ -83,43 +78,76 @@ int main(){
             health_robot-=5;
         }
         else if (a==2){   // Robot menembak
-            if ((m-1-Yr) == Yk) { // Robot berada pada 1 garis vertikal dengan kecoak
-                if (abs(Xr-Xk) <= 3) { 
+            if ((m-1-Yr) == (m-1-Yk)) {   // Robot berada pada 1 garis vertikal dengan kecoak
+                if (abs(Xr-Xk) <= 3) {
                     health_kecoak -= damage_robot;
                 }
                 else {
-                    printf("kecoak diluar jangkauan\n");
+                    printf("Kecoak diluar jangkauan\n");
                 }
             }
-            else if (Xk == Xr) {
+            else if (Xk == Xr) {    // Robot berada pada 1 garis horizontal dengan kecoak
                 if (abs(m-1-Yr-Yk) <= 3) {
                     health_kecoak -= damage_robot;
                 }
                 else {
-                    printf("kecoak diluar jangkauan\n");
+                    printf("Kecoak diluar jangkauan\n");
                 }
             }
             else {
-                printf("kecoak diluar jangkauan\n");
+                printf("Kecoak diluar jangkauan\n");
             }
-            
-            // belummm harus buat detector dulu
-
-            health_robot-=5; health_kecoak-=damage_robot;
+            health_robot-=5;
         }
         else if (a==3) {
             health_robot = 0;
+            /*printf("Permainan dihentikan.\n");
+            printf("\n===STATUS ROBOT DAN KECOAK===\n");
+            printf("Health robot: %d\n", health_robot);
+            printf("Health kecoak: %d\n", health_kecoak);
+            printf("Jumlah kecoak yang berhasil dibunuh: %d", kecoak_killed);
+            break;*/
         }
-        // Mengupdate Peta
+
+        // Pergerakan dan tembakan kecoak
+        int c=0;
+        printf("%d", c);
+        if (c==0){      // Kecoak bergerak
+            koor[m-1-Yk][Xk]=0;
+            int d=rand()%4;
+            if (d==0){      // Kecoak maju
+                Yk+=1;
+            }
+            else if (d==1){ // Kecoak mundur
+                Yk-=1;
+            }
+            else if (d==2){ // Kecoak ke kanan
+                Xk+=1;
+            }
+            else if (d==3){ // Kecoak ke kiri
+                Xk-=1;
+            }
+        }
+        else if (c==1){ // Kecoak menembak
+            //belum
+        }
+
+        // Update peta
         printf("\n===PETA ROBOT DAN KECOAK===");
         koor[m-1-Yr][Xr]=7;
+        koor[m-1-Yk][Xk]=8;
         printf("\n");
         for (int i=0; i<m; i++){
             for (int j=0; j<n; j++){
-                printf("%d ", koor[i][j]);       
+                printf("%d ", koor[i][j]);
             }
             printf("\n");
         }
+
+        if (health_kecoak <= 0) {
+            kecoak_killed += 1;
+            health_kecoak = 0;
+        }        
 
         // Mencetak status health dari robot dan kecoak setelah command
         printf("\n===STATUS ROBOT DAN KECOAK===\n");
