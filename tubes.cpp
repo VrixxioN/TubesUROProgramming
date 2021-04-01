@@ -64,16 +64,36 @@ int main(){
             printf("1. Maju\n2. Mundur\n3. Kanan\n4. Kiri\nKe arah mana robot akan bergerak (masukkan angka)? ");
             scanf("%d", &b);
             if (b==1){      // Robot maju
-                Yr+=1;
+                if ((m-1-Yr) == 0){ //Pengecekan apakah robot ada di ujung battlefield
+                    printf("\n[Tidak bisa maju, robot berada di ujung battefield]\n");
+                }
+                else {
+                    Yr+=1;
+                } 
             }
             else if (b==2){ // Robot mundur
-                Yr-=1;
+                if (Yr == 0) {
+                    printf("\n[Tidak bisa mundur, robot berada di ujung battefield]\n");
+                }
+                else {
+                    Yr-=1;
+                }
             }
             else if (b==3){ // Robot ke kanan
-                Xr+=1;
+                if (Xr == (n-1)) {
+                    printf("\n[Tidak bisa ke kanan, robot berada di ujung battefield]\n");
+                }
+                else {
+                    Xr+=1;
+                }
             }
             else if (b==4){ // Robot ke kiri
-                Xr-=1;
+                if (Xr == 0) {
+                    printf("\n[Tidak bisa ke kiri, robot berada di ujung battefield]\n");
+                }
+                else {
+                    Xr-=1;
+                }
             }
             health_robot-=5;
         }
