@@ -1,6 +1,10 @@
 # Tubes Programming URO
 ## Program robot pembasmi kecoak mutan
 _Link_ GitHub: [TubesUROProgramming](https://github.com/VrixxioN/TubesUROProgramming.git)
+Anggota kelompok:
+1. Della Puspita (16020030)
+2. Nanda Pramudia Santosa (16020322)
+3. Ihsan M. Fauzan (16720255)
 
 Robot memiliki _health_ 200 dan _damage_ 5. Kecoak memiliki _health_ 20 dan _damage_ 5.
 Robot dan kecoak memiliki jangkauan tembakan sejauh 3 satuan.
